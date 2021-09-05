@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState , useEffect } from 'react'
 import { StyleSheet, View, Text, TextInput, Button, ToastAndroid } from 'react-native'
 
 
@@ -8,9 +8,10 @@ function ExerciseThree() {
   const [num2, setNum2] = useState({num: null, color: 'black'});
   const [num3, setNum3] = useState({num: null, color: 'black'});
   const [num4, setNum4] = useState({num: null, color: 'black'});
-  const [numbers,setNumbers] = useState([]);
   const [menor,setMenor] = useState(0);
   const [mayor,setMayor] = useState(0);
+  const [menorReal,setMenorReal] = useState(0);
+  const [mayorReal,setMayorReal] = useState(0);
   const [isCorrect, setIsCorrect] = useState(false);
 
   const validate = (setNum, num) => {
@@ -28,26 +29,38 @@ function ExerciseThree() {
       })
       setIsCorrect(true)
     }
-
   }
 
   const calculate = () => {
-    let errores = 0
+    let errores, min, max, maxTemp = 0
+    let numbers = []
+    console.log("Entraré si: " + isCorrect)
     if (isCorrect) {
       errores = 0
-      setNumbers([num1.num,num2.num,num3.num,num4.num])
       
+      numbers = [num1.num,num2.num,num3.num,num4.num]
+
       numbers.map(num => { !num ? errores++ : null })
-      
+
       if (errores == 0) {
-        setMenor(Math.min.apply(null, numbers))
-        setMayor(Math.max.apply(null, numbers))
-        if (menor > 10) {
-          setMayor(mayor + 10)
-        } 
-        if (mayor < 50) {
-          setMenor(menor - 5)
+        min = Math.min.apply(null, numbers)
+        max = Math.max.apply(null, numbers)
+        setMayorReal(max)
+        setMenorReal(min)
+        if (min > 10) {
+          console.log("menor > 10 = " + min)
+          maxTemp = max + 10
+        } else {
+          maxTemp = max
         }
+        if (max < 50) {
+          console.log("mayor < 50 = " + max)
+          min = min - 5
+        }
+
+        setMayor(maxTemp)
+        setMenor(min)
+
       } else {
         ToastAndroid.show("Debes completar todos los campos", ToastAndroid.SHORT);
       }
@@ -55,6 +68,7 @@ function ExerciseThree() {
       ToastAndroid.show("No se permiten 0 o menores", ToastAndroid.SHORT);
     }
   }
+
 
   return (
     <View style={styles.container}>
@@ -93,15 +107,19 @@ function ExerciseThree() {
         />
       </View>
       <View style={styles.divider} />
-      <Text>
-        <Text style={{fontSize:16}}>Números ingresados </Text>
-        <Text>{ numbers.map((num) => num).join(' , ') }</Text>
-      </Text>
-      <Text>{num1.num}</Text>
+      <View style={styles.resultContainer}>
+        <Text style={{fontSize:16}}>Número Mayor Real </Text>
+        <Text style={{fontWeight: 'bold'}}>{mayorReal}</Text>
+        <Text style={{fontSize:16}}>Número Menor Real </Text>
+        <Text style={{fontWeight: 'bold'}}>{menorReal}</Text>
+      </View>
       <View style={styles.divider} />
       <View style={styles.resultContainer}>
-        <Text style={{fontSize:20}}>Menor: {menor}</Text>
-        <Text style={{fontSize:20}}>Mayor: {mayor}</Text>
+        <Text>Resultados según condiciones: </Text>
+        <Text style={{fontSize:16}}>Mayor (+10)</Text>
+        <Text style={{fontWeight: 'bold'}}>{mayor}</Text>
+        <Text style={{fontSize:16}}>Menor (-5)</Text>
+        <Text style={{fontWeight: 'bold'}}>{menor}</Text>
       </View>
     </View>
   );
