@@ -104,6 +104,7 @@ function ExerciseThree() {
           title='Aceptar'
           style={styles.button}
           onPress={calculate}
+          color="#841584"
         />
       </View>
       <View style={styles.divider} />
