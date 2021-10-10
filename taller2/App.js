@@ -26,7 +26,11 @@ function Info() {
 function App() {
   return (
     <NavigationContainer>
-      <Tab.Navigator>
+      <Tab.Navigator 
+        screenOptions={{
+          tabBarActiveTintColor: '#841584',
+        }}
+      >
         <Tab.Screen 
           name="Ejercicio 1" 
           component={ExerciseOne} 
